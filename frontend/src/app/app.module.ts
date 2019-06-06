@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import {FormsModule} from '@angular/forms';
+import { HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule, BrowserAnimationsModule , 
+    BrowserModule,
+    HttpClientModule, BrowserAnimationsModule , 
     MatButtonModule ,MatInputModule,MatCardModule,
     FormsModule
   ],
