@@ -19,11 +19,15 @@ app.post('/api/message',(req,res)=>{
     res.status(200).send();
 })
 
-async function GetMessages(){
-         const docs =await db.collection('messages').find({}).toArray();
-          console.log(docs);
- 
-}
+app.get('/api/messages', async (req,res)=>{
+      const docs =await db.collection('messages').find({}).toArray();
+
+      if(!docs) return res.json({error :"error getting messages"});
+      
+      res.json(docs);
+})
+
+
 
 MongoClient.connect(url, function (err, client) {
 
@@ -32,8 +36,6 @@ MongoClient.connect(url, function (err, client) {
   console.log("Connected successfully to server");
 
    db = client.db(dbName);
-
-   GetMessages()
  
 });
 
