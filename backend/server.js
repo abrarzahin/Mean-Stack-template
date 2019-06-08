@@ -19,6 +19,12 @@ app.post('/api/message',(req,res)=>{
     res.status(200).send();
 })
 
+async function GetMessages(){
+         const docs =await db.collection('messages').find({}).toArray();
+          console.log(docs);
+ 
+}
+
 MongoClient.connect(url, function (err, client) {
 
   if(err) return console.log('mongodb error', err);
@@ -26,7 +32,9 @@ MongoClient.connect(url, function (err, client) {
   console.log("Connected successfully to server");
 
    db = client.db(dbName);
-  
+
+   GetMessages()
+ 
 });
 
 app.listen(port,()=>console.log('App running on port',port));
