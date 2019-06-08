@@ -2,13 +2,21 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
+var mongoose = require('mongoose');
 
 
 const app = express();
 const port = 3000;
 const url = 'mongodb://localhost:27017';
 const dbName = 'messageBoard';
-let db;
+
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+
+db.once('open', ()=>
+  console.log('connected to mongodb'));
+
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -33,16 +41,18 @@ app.get('/api/message', async (req, res) => {
   res.json(docs);
 })
 
+mongoose.connect(url);
 
 
-MongoClient.connect(url, function (err, client) {
 
-  if(err) return console.log('mongodb error', err);
-
-  console.log("Connected successfully to server");
-
-   db = client.db(dbName);
- 
-});
+//MongoClient.connect(url, function (err, client) {
+//
+//  if(err) return console.log('mongodb error', err);
+//
+//  console.log("Connected successfully to server");
+//
+//   db = client.db(dbName);
+// 
+//});
 
 app.listen(port,()=>console.log('App running on port',port));
