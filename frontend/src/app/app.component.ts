@@ -8,11 +8,12 @@ import {HttpClient} from '@angular/common/http';
 })
 export class AppComponent {
   message = '';
+  messages = [];
 
   constructor(private http: HttpClient){}
 
-  ngOnInit() {
-    this.http.get('http://localhost:3000/api/message').toPromise();
+  async ngOnInit() {
+   this.messages = await (this.http.get('http://localhost:3000/api/message').toPromise()) as any;
   }
 
 
