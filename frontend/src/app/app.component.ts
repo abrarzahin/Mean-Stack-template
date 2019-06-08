@@ -11,6 +11,10 @@ export class AppComponent {
 
   constructor(private http: HttpClient){}
 
+  ngOnInit() {
+    this.http.get('http://localhost:3000/api/message').toPromise();
+  }
+
 
   post(){
     console.log('post', this.message);
