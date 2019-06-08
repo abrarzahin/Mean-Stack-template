@@ -13,10 +13,15 @@ let db;
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post('/api/message',(req,res)=>{
+app.post('/api/message',async (req,res)=>{
   const message= req.body;
     console.log(message);
     db.collection('messages').insertOne(message);
+
+    const foundUser= await db.collection('users').findOne({name: message.userName});
+    console.log(foundUser);
+    if(!foundUser) db.collection('users').insertOne({name: message.userName});
+
     res.status(200).send();
 })
 
