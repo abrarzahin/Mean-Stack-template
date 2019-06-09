@@ -1,14 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const MongoClient = require('mongodb').MongoClient;
 var mongoose = require('mongoose');
 
 
 const app = express();
 const port = 3000;
-const url = 'mongodb://localhost:27017';
-const dbName = 'messageBoard';
+const url = 'mongodb://localhost:27017/messageBoard';
 
 var db = mongoose.connection;
 
@@ -17,20 +15,33 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', ()=>
   console.log('connected to mongodb'));
 
+  const MessageSchema = new mongoose.Schema({
+    userName: String,
+    msg: String
+  });
+
+  const Message = mongoose.model('Message', MessageSchema);
+
 
 app.use(bodyParser.json());
 app.use(cors());
 
 app.post('/api/message',async (req,res)=>{
-  const message= req.body;
-    console.log(message);
-    db.collection('messages').insertOne(message);
+ 
 
-    const foundUser= await db.collection('users').findOne({name: message.userName});
-    console.log(foundUser);
-    if(!foundUser) db.collection('users').insertOne({name: message.userName});
+    const message= new Message(req.body);
 
-    res.status(200).send();
+    message.save();
+
+
+
+  //  db.collection('messages').insertOne(message);
+//
+  //  const foundUser= await db.collection('users').findOne({name: message.userName});
+  //  console.log(foundUser);
+  //  if(!foundUser) db.collection('users').insertOne({name: message.userName});
+//
+  //  res.status(200).send();
 })
 
 app.get('/api/message', async (req, res) => {
